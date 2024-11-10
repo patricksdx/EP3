@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="./style/index.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Bienvenido</h1>
+
+        <div id="welcomeMessage"></div>
+
+        <div class="form-footer">
+            <button id="logoutButton">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+            } else {
+                const nombres = sessionStorage.getItem('nombres');
+                const apellidos = sessionStorage.getItem('apellidos');
+
+                if (nombres && apellidos) {
+                    const welcomeMessage = `Hola, ${nombres} ${apellidos}! Bienvenido a tu página de inicio.`;
+                    document.getElementById('welcomeMessage').textContent = welcomeMessage;
+                }
+            }
+        });
+
+        function logout() {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('nombres');
+            sessionStorage.removeItem('apellidos');
+
+            history.pushState(null, null, window.location.href);
+            history.back();
+            history.forward();
+
+            setTimeout(() => {
+                window.location.replace('/login.html');
+            }, 0);
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', logout);
+    </script>
+
+</body>
+
+</html>
